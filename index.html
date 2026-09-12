@@ -75,7 +75,17 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer;
 #home{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 
 /* ============ home ============ */
-.wrap{max-width:620px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top)) 16px calc(34px + env(safe-area-inset-bottom))}
+.block{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin-top:34px}
+.block.head{gap:0;margin-top:34px}
+.hero.secline{display:block;margin:34px 0 0}
+.hero.secline .sec{margin:0}
+.hero.secline + .block{margin-top:14px}
+.block.head + .block{margin-top:14px}   /* content sits close under its own heading */
+.hero + .block.head{margin-top:8px}
+.block > *{min-width:0}
+.block .sec{margin:0}
+.block .cats{margin:0}
+.wrap{display:flow-root;max-width:620px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top)) 16px calc(34px + env(safe-area-inset-bottom))}
 .hero{display:flex;align-items:center;gap:14px;margin-bottom:20px}
 .avatar{
   width:62px;height:62px;border-radius:20px;object-fit:cover;flex:none;
@@ -90,9 +100,11 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer;
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
 .sec{
-  font-size:13px;font-weight:600;color:var(--mut);letter-spacing:.07em;text-transform:uppercase;
-  margin:34px 0 13px;padding:22px 4px 0;border-top:1px solid rgba(255,255,255,.09);
+  display:block;font-size:13px;font-weight:600;line-height:1.5;color:var(--mut);
+  letter-spacing:.07em;text-transform:uppercase;
+  margin:34px 0 14px;padding:22px 4px 0;border-top:1px solid rgba(255,255,255,.09);
 }
+.sec > span{display:inline-block;vertical-align:middle}
 .hero + .sec{border-top:none;padding-top:0;margin-top:8px}
 .tiles,.badges{margin-bottom:2px}
 
@@ -436,8 +448,9 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer;
 .purse svg{width:19px;height:19px;flex:none}
 .purse b{font-size:19px;font-weight:700;color:var(--amber);font-variant-numeric:tabular-nums}
 .purse span{font-size:11.5px;color:var(--mut)}
-.sec.row{display:flex;align-items:center;justify-content:flex-start;gap:9px;flex-wrap:wrap}
+.sec.row{display:block}
 .sec.row em{
+  display:inline-block;vertical-align:middle;margin-left:9px;
   font-style:normal;text-transform:none;letter-spacing:0;font-size:11.5px;font-weight:600;
   color:var(--mut);padding:3px 10px;border-radius:20px;
   background:rgba(255,255,255,.07);border:1px solid var(--line);
@@ -688,7 +701,7 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer;
 .ropt.bad{background:linear-gradient(180deg,#FF8A9B,var(--coral));color:#3D0A12}
 
 /* ============ categories, parent zone ============ */
-.cats{display:flex;flex-wrap:wrap;gap:7px;padding:2px 0 6px}
+.cats{display:flex;flex-wrap:wrap;gap:7px;padding:0 0 6px;margin:0 0 4px;clear:both}
 .chiplock{display:inline-flex;width:15px;height:15px;margin-right:6px}
 .chiplock svg{width:15px;height:15px;display:block}
 .cats button{
@@ -845,7 +858,7 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer;
   .players span,.purse span{font-size:10px}
   .streak{font-size:11.5px;padding:5px 10px}
 
-  .sec{margin:26px 0 11px;padding-top:18px;font-size:12px}
+  .sec{margin:26px 0 12px;padding-top:18px;font-size:12px;line-height:1.5}
   .cats button{padding:0 13px;min-height:38px;font-size:13px}
   .tiles{grid-template-columns:repeat(2,1fr);gap:9px}
   .tile{padding:12px 11px;border-radius:19px}
@@ -966,13 +979,22 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer;
           <div><b id="purse">0</b><span> coins</span></div>
         </div>
       </div>
-      <div class="sec row"><span>Choose a mission</span><em id="tcount"></em></div>
-      <div class="cats" id="cats"></div>
-      <div class="tiles" id="tiles"></div>
-      <div class="sec row"><span>Badges</span><em id="badgecount"></em></div>
-      <div class="badges" id="badgebox"></div>
-      <div class="sec">Settings</div>
-      <div class="card">
+      
+      <section class="block">
+        <div class="cats" id="cats"></div>
+        <div class="tiles" id="tiles"></div>
+      </section>
+      <section class="block head">
+        <div class="sec row"><span>Badges</span><em id="badgecount"></em></div>
+      </section>
+      <section class="block">
+        <div class="badges" id="badgebox"></div>
+      </section>
+      <section class="block head">
+        <div class="sec">Settings</div>
+      </section>
+      <section class="block">
+        <div class="card">
         <div class="lab">Which class?</div>
         <div class="seg" id="segclass">
           <button data-v="1">Class 1</button>
@@ -1001,20 +1023,21 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer;
           </button>
         </div>
       </div>
-      <button class="card parentrow" id="openpilot">
+        <button class="card parentrow" id="openpilot">
         <span class="pic">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4" fill="currentColor"/><path d="M4.5 20a7.5 7.5 0 0115 0z" fill="currentColor"/></svg>
         </span>
         <span class="ptxt"><b>Who is flying?</b><i>Use your own photo or a cartoon pilot</i></span>
         <span class="parr">›</span>
       </button>
-      <button class="card parentrow" id="openparent">
+        <button class="card parentrow" id="openparent">
         <span class="pic">
           <svg viewBox="0 0 24 24"><path d="M6 10h12a1 1 0 011 1v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8a1 1 0 011-1z" fill="currentColor"/><path d="M8 10V7a4 4 0 118 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
         </span>
         <span class="ptxt"><b>Parent Zone</b><i>Progress, what to practise, and privacy</i></span>
         <span class="parr">›</span>
-      </button>
+        </button>
+      </section>
     </div>
   </div>
 
